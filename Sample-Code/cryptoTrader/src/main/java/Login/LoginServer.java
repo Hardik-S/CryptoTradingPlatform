@@ -1,9 +1,8 @@
 package Login;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.util.Scanner; // Import the Scanner class to read text files
 
-import cryptoTrader.gui.MainUI;
+import java.util.Scanner; // Import the Scanner class to read text files
 
 /**
  * Singleton Login Server for verifying the user credentials 
@@ -31,22 +30,22 @@ public class LoginServer {
 	 */
 	public boolean checkCredentials(String user, String password) {
 		try {
-
+			
 			String[] dataParse;
-			File myObj = new File("src/main/java/Login/LoginDB.txt");
+			File myObj = new File("LoginDB.txt");
 			Scanner myReader = new Scanner(myObj);
 
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
-				dataParse = data.split(",");
-				dataParse[1] = dataParse[1].replace(" ", "");
+				dataParse = data.split(","); //Separates the username and password
+				dataParse[1] = dataParse[1].replace(" ", ""); //gets rid of empty space
 
-				if (user.equals(dataParse[0]) && password.equals(dataParse[1])) {
+				if (user.equals(dataParse[0]) && password.equals(dataParse[1])) { //username and password match
 					return true;
 				}
 			}
 			myReader.close();
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) { //file not found
 			System.out.println("An error occurred");
 
 		}
@@ -54,6 +53,10 @@ public class LoginServer {
 		return false;
 	}
 	
+	/**
+	 * Singleton method to only have one login server session
+	 * @return login server instance
+	 */
 	public static LoginServer getInstance() {
 		
 		if (instance == null)
