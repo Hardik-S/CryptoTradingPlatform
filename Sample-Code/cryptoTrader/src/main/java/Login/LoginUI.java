@@ -76,6 +76,10 @@ public class LoginUI extends JFrame implements ActionListener{
 		panel.add(success);
 	}
 	
+	/**
+	 * singleton method
+	 * @return
+	 */
 	private static LoginUI getInstance() {
         if (instance == null)
             instance = new LoginUI();
