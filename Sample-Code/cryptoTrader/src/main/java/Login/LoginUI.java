@@ -30,7 +30,7 @@ public class LoginUI extends JFrame implements ActionListener{
 	private LoginUI() {
 		super("Crypto Trading Login");
 		panel = new JPanel();
-		
+		//test
 		//dimensions for organizing text and scaling
 		int labelX = 10;
 		int labelY = 15;
