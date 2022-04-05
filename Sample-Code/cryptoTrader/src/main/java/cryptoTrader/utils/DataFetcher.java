@@ -41,6 +41,7 @@ public class DataFetcher {
 		return null;
 	}
 	
+	// pass 2 strings and get double 
 	public double getPriceForCoin(String id, String date) {
 		double price = 0.0;
 		
