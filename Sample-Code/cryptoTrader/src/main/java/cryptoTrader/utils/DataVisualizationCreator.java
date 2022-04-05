@@ -3,6 +3,8 @@ package cryptoTrader.utils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -98,25 +100,44 @@ public class DataVisualizationCreator {
 
 	private void createTimeSeries() {
 		TimeSeries series1 = new TimeSeries("Bitcoin - Daily");
-		series1.add(new Day(13, 9, 2021), 50368.67);
-		series1.add(new Day(14, 9, 2021), 51552.05);
-		series1.add(new Day(15, 9, 2021), 47228.30);
-		series1.add(new Day(16, 9, 2021), 45263.90);
-		series1.add(new Day(17, 9, 2021), 46955.41);
+		// figure out how to use today's date to create new Day object
+		// figure out how to talk to data fetcher from here
+		// fill in price value 
+		LocalDate currentdate = LocalDate.now();
+		int currentDay = currentdate.getDayOfMonth();
+		int currentMonth = YearMonth.now().getMonthValue();
+		int currentYear = currentdate.getYear();
+		DataFetcher df = new DataFetcher();
+
+		double price = df.getPriceForCoin("BTC", currentdate.toString());
+		series1.add(new Day(currentDay, currentMonth, currentYear), price);
+
+
+		// series1.add(new Day(13, 9, 2021), 50368.67);
+		// series1.add(new Day(14, 9, 2021), 51552.05);
+		// series1.add(new Day(15, 9, 2021), 47228.30);
+		// series1.add(new Day(16, 9, 2021), 45263.90);
+		// series1.add(new Day(17, 9, 2021), 46955.41);
 		
 		TimeSeries series2 = new TimeSeries("Ethereum - Daily");
-		series2.add(new Day(13, 9, 2021), 3912.28);
-		series2.add(new Day(14, 9, 2021), 3927.27);
-		series2.add(new Day(15, 9, 2021), 3460.48);
-		series2.add(new Day(16, 9, 2021), 3486.09);
-		series2.add(new Day(17, 9, 2021), 3550.29);
+		price = df.getPriceForCoin("ETH", currentdate.toString());
+		series2.add(new Day(currentDay, currentMonth, currentYear), price);
+
+		// series2.add(new Day(13, 9, 2021), 3912.28);
+		// series2.add(new Day(14, 9, 2021), 3927.27);
+		// series2.add(new Day(15, 9, 2021), 3460.48);
+		// series2.add(new Day(16, 9, 2021), 3486.09);
+		// series2.add(new Day(17, 9, 2021), 3550.29);
 
 		TimeSeries series3 = new TimeSeries("Cardano - Daily");
-		series3.add(new Day(13, 9, 2021), 2.87);
-		series3.add(new Day(14, 9, 2021), 2.84);
-		series3.add(new Day(15, 9, 2021), 2.41);
-		series3.add(new Day(16, 9, 2021), 2.43);
-		series3.add(new Day(17, 9, 2021), 2.59);
+		price = df.getPriceForCoin("ADA", currentdate.toString());
+		series3.add(new Day(currentDay, currentMonth, currentYear), price);
+
+		// series3.add(new Day(13, 9, 2021), 2.87);
+		// series3.add(new Day(14, 9, 2021), 2.84);
+		// series3.add(new Day(15, 9, 2021), 2.41);
+		// series3.add(new Day(16, 9, 2021), 2.43);
+		// series3.add(new Day(17, 9, 2021), 2.59);
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series1);
@@ -149,25 +170,37 @@ public class DataVisualizationCreator {
 	
 	private void createScatter() {
 		TimeSeries series1 = new TimeSeries("Bitcoin - Daily");
-		series1.add(new Day(13, 9, 2021), 50368.67);
-		series1.add(new Day(14, 9, 2021), 51552.05);
-		series1.add(new Day(15, 9, 2021), 47228.30);
-		series1.add(new Day(16, 9, 2021), 45263.90);
-		series1.add(new Day(17, 9, 2021), 46955.41);
+		LocalDate currentdate = LocalDate.now();
+		int currentDay = currentdate.getDayOfMonth();
+		int currentMonth = YearMonth.now().getMonthValue();
+		int currentYear = currentdate.getYear();
+		DataFetcher df = new DataFetcher();
+
+		double price = df.getPriceForCoin("BTC", currentdate.toString());
+		series1.add(new Day(currentDay, currentMonth, currentYear), price);
+		// series1.add(new Day(13, 9, 2021), 50368.67);
+		// series1.add(new Day(14, 9, 2021), 51552.05);
+		// series1.add(new Day(15, 9, 2021), 47228.30);
+		// series1.add(new Day(16, 9, 2021), 45263.90);
+		// series1.add(new Day(17, 9, 2021), 46955.41);
 		
 		TimeSeries series2 = new TimeSeries("Ethereum - Daily");
-		series2.add(new Day(13, 9, 2021), 3912.28);
-		series2.add(new Day(14, 9, 2021), 3927.27);
-		series2.add(new Day(15, 9, 2021), 3460.48);
-		series2.add(new Day(16, 9, 2021), 3486.09);
-		series2.add(new Day(17, 9, 2021), 3550.29);
+		price = df.getPriceForCoin("BTC", currentdate.toString());
+		series2.add(new Day(currentDay, currentMonth, currentYear), price);
+		// series2.add(new Day(13, 9, 2021), 3912.28);
+		// series2.add(new Day(14, 9, 2021), 3927.27);
+		// series2.add(new Day(15, 9, 2021), 3460.48);
+		// series2.add(new Day(16, 9, 2021), 3486.09);
+		// series2.add(new Day(17, 9, 2021), 3550.29);
 
 		TimeSeries series3 = new TimeSeries("Cardano - Daily");
-		series3.add(new Day(13, 9, 2021), 2.87);
-		series3.add(new Day(14, 9, 2021), 2.84);
-		series3.add(new Day(15, 9, 2021), 2.41);
-		series3.add(new Day(16, 9, 2021), 2.43);
-		series3.add(new Day(17, 9, 2021), 2.59);
+		price = df.getPriceForCoin("BTC", currentdate.toString());
+		series3.add(new Day(currentDay, currentMonth, currentYear), price);
+		// series3.add(new Day(13, 9, 2021), 2.87);
+		// series3.add(new Day(14, 9, 2021), 2.84);
+		// series3.add(new Day(15, 9, 2021), 2.41);
+		// series3.add(new Day(16, 9, 2021), 2.43);
+		// series3.add(new Day(17, 9, 2021), 2.59);
 
 		TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(series1);
