@@ -2,7 +2,7 @@ package cryptoTrader.main;
 
 import java.util.HashMap;
 
-enum TradeResult { TRADE, NOTRADE, FAIL }
+//enum TradeResult { TRADE, NOTRADE, FAIL }
 
 public abstract class Strategy {
     private String[] usedCoins;
