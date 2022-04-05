@@ -15,4 +15,10 @@ public class ResultFactory {
         this.resultList.add(trade);
         return (trade);
     }
+    
+    public ArrayList<String[]> getSummary () {
+    	ArrayList<String[]> entries = new ArrayList<String[]>();
+    	for (Result i : resultList) entries.add(i.getResult());
+    	return entries;
+    }
 }

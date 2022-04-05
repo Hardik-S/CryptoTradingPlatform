@@ -26,7 +26,7 @@ public class SubsystemUI {
     /**
      * Runs all trades created so far, returns ResultFactory storing all 
      */
-    public ResultFactory runTrades () {
+    public Object[] runTrades () {
         ResultFactory results = new ResultFactory();
         // get prices of all subscribed coins
         for (int i = 0; i < this.activeClients.size(); i++) { // for all clients
@@ -56,6 +56,7 @@ public class SubsystemUI {
                 // placeholders used for some values, will be replaced later
             }
             
-        } return (results); // returns class holding all results
+        } return (results.getSummary().toArray()); // returns class holding all results
     }
+    
 }
