@@ -15,9 +15,6 @@ import cryptoTrader.gui.MainUI;
 
 public class LoginUI extends JFrame implements ActionListener{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private static JLabel userLabel;
 	private static JLabel passwordLabel;
@@ -77,7 +74,7 @@ public class LoginUI extends JFrame implements ActionListener{
 	}
 	
 	/**
-	 * singleton method
+	 * singleton method for login UI
 	 * @return
 	 */
 	private static LoginUI getInstance() {
@@ -87,14 +84,17 @@ public class LoginUI extends JFrame implements ActionListener{
         return instance; 
     }
 	
+	/**
+	 * Crypto Trading Application start point
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		auth = LoginServer.getInstance();
 		JFrame frame = LoginUI.getInstance();
 		frame.setSize(500, 300);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
-		
-
 	}
 
 	/**
@@ -114,22 +114,33 @@ public class LoginUI extends JFrame implements ActionListener{
 			
 			close();
 			
-			JFrame frame = MainUI.getInstance();
+			JFrame frame = MainUI.getInstance(); //creates a main UI instance
 			frame.setSize(900, 600);
 			frame.pack();
 			frame.setVisible(true);
 		}
 		else {
-			success.setText("Wrong Username or Password");
-			//reset username and password fields
-			usernameText.setText("");
-			passwordText.setText("");
+			close();
+			
+			//displays an error message and closes the application
+			JFrame errorFrame = new JFrame("Error");
+			JPanel errorPanel = new JPanel();
+			errorFrame.add(errorPanel);
+			errorFrame.setSize(250, 100);
+			
+			errorFrame.setLocationRelativeTo(null);
+			JLabel errorLabel = new JLabel("Wrong Username or Password");
+			errorPanel.setLayout(null);
+			errorLabel.setBounds(5, 20, 270, 20);
+			errorPanel.add(errorLabel);
+			errorFrame.setVisible(true);
+			
 		}
 		
 	}
 	
 	/**
-	 * method to close the login UI after successful login
+	 * method to close the login UI after successful or unsuccessful login
 	 */
 	public void close() {
 		setVisible(false);
