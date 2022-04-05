@@ -22,6 +22,8 @@ public class SubsystemUI {
         this.activeClients.add(newClient);
         return (newClient);
     }
+    
+    
 
     /**
      * Runs all trades created so far, returns ResultFactory storing all 
