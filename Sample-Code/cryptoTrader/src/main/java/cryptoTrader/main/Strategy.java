@@ -7,7 +7,7 @@ enum TradeResult { TRADE, NOTRADE, FAIL }
 public abstract class Strategy {
     private String[] usedCoins;
     
-    public abstract void executeStrategy(String strategyname, HashMap<String, Integer> prices);
+    public abstract TradeResult executeStrategy(String strategyname, HashMap<String, Integer> prices);
 
     @Override
     public String toString () {
