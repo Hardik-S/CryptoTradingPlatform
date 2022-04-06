@@ -1,4 +1,4 @@
-package cryptoTrader.utils;
+package cryptoTrader.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,8 +35,6 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
-
-import cryptoTrader.gui.MainUI;
 
 public class DataVisualizationCreator {
 	

@@ -31,8 +31,7 @@ import javax.swing.table.TableColumn;
 import Results.ActionLogHistory;
 import Results.ResultFactory;
 import cryptoTrader.main.Controller;
-import cryptoTrader.utils.AvailableCryptoList;
-import cryptoTrader.utils.DataVisualizationCreator;
+
 
 public class MainUI extends JFrame implements ActionListener {
 	/**
@@ -205,18 +204,18 @@ public class MainUI extends JFrame implements ActionListener {
 					String strategyName = strategyObject.toString();
 					//System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
 					
-					clients.createClient(traderName, coinNames, strategyName);
-					System.out.println("\nCurrent: ");	
+					clients.createClient(traderName, coinNames, strategyName); //creates a new broker based on inputed data
+				
 					
 					
 	        }
 			
-			ResultFactory result = clients.runTrades();
-            log.addToResultHistory(result);
+			ResultFactory result = clients.runTrades(); //perform trade button
+            log.addToResultHistory(result); //adds the results of the perform trade to the history log
 
 			stats.removeAll();
-			DataVisualizationCreator creator = new DataVisualizationCreator();
-			creator.createCharts(log.getHistory());
+			DataVisualizationCreator creator = new DataVisualizationCreator(); //creates a new table and histogram
+			creator.createCharts(log.getHistory()); //sends the result to the data visualizer 
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
 		} else if ("remTableRow".equals(command)) {

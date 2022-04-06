@@ -63,25 +63,25 @@ public class Controller {
         }
         // call API and return coins to hashmap
 
-        HashMap<String, Float> coinPrices = new HashMap<String, Float>(); // API returns here <-- (temp empty)
         
-        DataFetcher fetcher = new DataFetcher();
+        DataFetcher fetcher = new DataFetcher(); //data fetcher to get coin prices
         
         
-        for (int i = 0; i < this.activeClients.size(); i++) {
+        for (int i = 0; i < this.activeClients.size(); i++) { //loops through all brokers
         	String cryptoCoin = "";
         	Strategy stratToRun;
         	
-        	StrategyFactory strat = new StrategyFactory();
-        	int quantity = 0;
-        	TradeResult clientResult = null;
+        	StrategyFactory strat = new StrategyFactory(); //for creating new strategy
+        	int quantity = 0; //amount of coin to trade
+        	TradeResult clientResult = null; //buy, sell, or fail trade
         	
         	
             HashMap<String, Float> clientCoinPrices = new HashMap<String, Float>();
         
             for (String clientCoins : this.activeClients.get(i).getCoins()) { // for every coin of a specific client
             	
-            	if (clientCoins.equals("BTC")){
+            	//converting the Symbols into strings that the API can read
+            	if (clientCoins.equals("BTC")){ 
             		clientCoins = "bitcoin";
             	}
             	else if (clientCoins.equals("ETH")) {
@@ -91,11 +91,11 @@ public class Controller {
             		clientCoins = "tether";
             	}
           
-  
+            	//stores the coin names and prices into a hash map
             	clientCoinPrices.put(clientCoins, (float)fetcher.getPriceForCoin(clientCoins, getDate()));
-
             }
             
+            //choosing which strategy. Edits the quantity and strategy applied to the broker
             if (this.activeClients.get(i).strategy().equals("Strategy-A")) {
             	cryptoCoin = "BTC";
             	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
@@ -122,7 +122,7 @@ public class Controller {
             }
             
             String tempCoin = "";
-            //TradeResult clientResult = this.activeClients.get(i).runStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
+            
             if (cryptoCoin.equals("BTC")){
             	tempCoin = "bitcoin";
         	}
