@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -30,6 +31,7 @@ import javax.swing.table.TableColumn;
 
 import cryptoTrader.main.ResultFactory;
 import cryptoTrader.main.SubsystemUI;
+import cryptoTrader.main.TradingClient;
 import cryptoTrader.utils.AvailableCryptoList;
 import cryptoTrader.utils.DataVisualizationCreator;
 
@@ -190,21 +192,29 @@ public class MainUI extends JFrame implements ActionListener {
 			
 			clients = new SubsystemUI();
 			for (int count = 0; count < dtm.getRowCount(); count++){
+					ArrayList<TradingClient> clientList = clients.getActiveClients();
+					for (TradingClient current : clientList) {
+						if (current.getName().equals(dtm.getValueAt(count, 0))) {
+							JOptionPane.showMessageDialog(this, "Please fill in a unique Trader name on line " + (count + 1) + ".");
+							return;
+						}
+					}
 					Object traderObject = dtm.getValueAt(count, 0);
 					if (traderObject == null) {
-						JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
+						JOptionPane.showMessageDialog(this, "Please fill in Trader name on line " + (count + 1) + ".");
 						return;
 					}
 					String traderName = traderObject.toString();
 					Object coinObject = dtm.getValueAt(count, 1);
 					if (coinObject == null) {
-						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
+						JOptionPane.showMessageDialog(this, "Please fill in cryptocoin list on line " + (count + 1) + ".");
 						return;
 					}
-					String[] coinNames = coinObject.toString().split(",");
+					
+					String[] coinNames = coinObject.toString().replaceAll(" ", "").split(",");
 					Object strategyObject = dtm.getValueAt(count, 2);
 					if (strategyObject == null) {
-						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
+						JOptionPane.showMessageDialog(this, "Please fill in strategy name on line " + (count + 1) + ".");
 						return;
 					}
 					String strategyName = strategyObject.toString();

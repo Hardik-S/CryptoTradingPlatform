@@ -14,6 +14,16 @@ public class Result {
     private int quantity;
     private String date; // millisecond epoch time of trade signature
 
+    /**
+     * Creates a specific result given the parameters
+     * @param trader name
+     * @param strategy used to determine trade
+     * @param cryptocoin traded
+     * @param action taken - buy, sell, or invalid (not enough information to make trade)
+     * @param quantity of coins traded
+     * @param price of coin at trade
+     * @param date in epoch time
+     */
     public Result (String trader, String strategy, String cryptocoin, TradeResult action, int quantity, float price, String date) {
         this.trader = trader;
         this.strategy = strategy;

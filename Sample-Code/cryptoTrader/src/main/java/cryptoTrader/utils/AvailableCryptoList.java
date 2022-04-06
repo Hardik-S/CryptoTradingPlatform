@@ -104,6 +104,7 @@ public class AvailableCryptoList {
 	}
 	
 	public String[] getAvailableCryptos() {
+		System.out.println("~~~~" + availableCryptosList.toArray(new String[availableCryptosList.size()]));
 		return availableCryptosList.toArray(new String[availableCryptosList.size()]);
 	}
 	
