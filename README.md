@@ -18,4 +18,5 @@ Main UI information
 		seperate each coin by a comma, spaces do not matter
 	
 	Strategy Name column
-		Drop down menu consisting of 4 strategies
+		Drop down menu consisting of 4 strategies, must pick one. If one is not picked, an error will appear 
+		
