@@ -51,7 +51,7 @@ public class DataVisualizationCreator {
 		// Dummy dates for demo purposes. These should come from selection menu
 		Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"};
 		
-		Object[][] data = resultList.getResultObject();
+		Object[][] data = resultList.getResultObject(); // string array of each object and the fields within each
 
 		JTable table = new JTable(data, columnNames);
 		//table.setPreferredSize(new Dimension(600, 300));

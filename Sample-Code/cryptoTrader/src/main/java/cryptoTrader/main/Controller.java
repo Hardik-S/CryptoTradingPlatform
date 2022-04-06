@@ -21,20 +21,22 @@ public class Controller {
     private HashSet<String> coins;
     private static Controller instance;
 
+    /**
+     * Initialises class objects
+     */
     public Controller () {
         this.activeClients = new ArrayList<TradingClient>();
         this.coins = new HashSet<String>();
     }
     
-//    public static SubsystemUI getInstance() {
-//		
-//		if (instance == null)
-//			instance = new SubsystemUI();
-//
-//		return instance;
-//		
-//	}
 
+    /**
+     * 
+     * @param clientName
+     * @param clientCoins
+     * @param clientStrategy
+     * @return
+     */
     public TradingClient createClient(String clientName, String[] clientCoins, String clientStrategy) { // trading client factory
 
         TradingClient newClient = new TradingClient(clientName, clientCoins, clientStrategy);
