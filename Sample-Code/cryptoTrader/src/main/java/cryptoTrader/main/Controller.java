@@ -9,6 +9,9 @@ import javax.xml.namespace.QName;
 
 import Login.LoginServer;
 import Login.LoginUI;
+import Results.ResultFactory;
+import Strategies.Strategy;
+import Strategies.StrategyFactory;
 import cryptoTrader.utils.DataFetcher;
 
 import java.util.HashMap;
@@ -88,23 +91,19 @@ public class Controller {
             		clientCoins = "tether";
             	}
           
-          
+  
             	clientCoinPrices.put(clientCoins, (float)fetcher.getPriceForCoin(clientCoins, getDate()));
-            	System.out.println("CLient coin: " + clientCoins);
+
             }
             
             if (this.activeClients.get(i).strategy().equals("Strategy-A")) {
             	cryptoCoin = "BTC";
-            	//creator = new StrategyCreatorA();
             	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
-            	//stratToRun = creator.factoryMethod(this.activeClients.get(i).strategy(), clientCoinPrices);
             	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
             	quantity = stratToRun.getQuantity();
             }
             else if (this.activeClients.get(i).strategy().equals("Strategy-B")) {
             	cryptoCoin = "USDT";
-            	//creator = new StrategyCreatorB();
-            	//stratToRun = creator.factoryMethod(this.activeClients.get(i).strategy(), clientCoinPrices);
             	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
             	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
             	quantity = stratToRun.getQuantity();
@@ -112,16 +111,12 @@ public class Controller {
             else if (this.activeClients.get(i).strategy().equals("Strategy-C")) {
             	cryptoCoin = "BTC";
             	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
-            	//creator = new StrategyCreatorC();
-            	//stratToRun = creator.factoryMethod(this.activeClients.get(i).strategy(), clientCoinPrices);
             	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
             	quantity = stratToRun.getQuantity();
             }
             else if ((this.activeClients.get(i).strategy().equals("Strategy-D"))) {
             	cryptoCoin = "ETH";
             	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
-            	//creator = new StrategyCreatorD();
-            	//stratToRun = creator.factoryMethod(this.activeClients.get(i).strategy(), clientCoinPrices);
             	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
             	quantity = stratToRun.getQuantity();
             }

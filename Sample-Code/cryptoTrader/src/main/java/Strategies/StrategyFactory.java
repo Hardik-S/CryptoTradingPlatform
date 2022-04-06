@@ -1,4 +1,4 @@
-package cryptoTrader.main;
+package Strategies;
 import java.util.HashMap;
 
 public class StrategyFactory {

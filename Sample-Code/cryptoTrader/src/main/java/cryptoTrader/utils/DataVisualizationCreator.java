@@ -27,14 +27,15 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 
+import Results.Result;
+import Results.ResultFactory;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 
 import cryptoTrader.gui.MainUI;
-import cryptoTrader.main.Result;
-import cryptoTrader.main.ResultFactory;
 
 public class DataVisualizationCreator {
 	
