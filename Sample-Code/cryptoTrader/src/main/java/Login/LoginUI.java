@@ -90,7 +90,7 @@ public class LoginUI extends JFrame implements ActionListener{
 	 */
 	public static void main(String[] args) {
 		
-		System.out.println("HELOEFAIOEAF");
+		
 		auth = LoginServer.getInstance();
 		JFrame frame = LoginUI.getInstance();
 		frame.setSize(500, 300);

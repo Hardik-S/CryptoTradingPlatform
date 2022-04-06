@@ -95,34 +95,15 @@ public class Controller {
             	clientCoinPrices.put(clientCoins, (float)fetcher.getPriceForCoin(clientCoins, getDate()));
             }
             
-            //choosing which strategy. Edits the quantity and strategy applied to the broker
-            if (this.activeClients.get(i).strategy().equals("Strategy-A")) {
-            	cryptoCoin = "BTC";
-            	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
-            	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
-            	quantity = stratToRun.getQuantity();
-            }
-            else if (this.activeClients.get(i).strategy().equals("Strategy-B")) {
-            	cryptoCoin = "USDT";
-            	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
-            	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
-            	quantity = stratToRun.getQuantity();
-            }
-            else if (this.activeClients.get(i).strategy().equals("Strategy-C")) {
-            	cryptoCoin = "BTC";
-            	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
-            	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
-            	quantity = stratToRun.getQuantity();
-            }
-            else if ((this.activeClients.get(i).strategy().equals("Strategy-D"))) {
-            	cryptoCoin = "ETH";
-            	stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
-            	clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
-            	quantity = stratToRun.getQuantity();
-            }
+            //calls factory for strategy and gets all information based on that strategy
+            stratToRun = strat.createStrategy(this.activeClients.get(i).strategy());
+            cryptoCoin = stratToRun.getCoinName();
+            clientResult = stratToRun.executeStrategy(this.activeClients.get(i).strategy(), clientCoinPrices);
+            quantity = stratToRun.getQuantity();
+            
             
             String tempCoin = "";
-            
+            //for getting the price of the coin that will be traded
             if (cryptoCoin.equals("BTC")){
             	tempCoin = "bitcoin";
         	}

@@ -18,5 +18,6 @@ public abstract class Strategy {
     }
     public abstract int getQuantity();
     public abstract float getPrice(HashMap<String, Float> prices);
+    public abstract String getCoinName();
 
 }

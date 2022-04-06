@@ -14,9 +14,9 @@ public class Strategy1 extends Strategy{
 		if ((prices.size() < 2) || !((prices.containsKey("bitcoin") && (prices.containsKey("ethereum"))))) {
 			return TradeResult.FAIL;
 		} if (prices.get("bitcoin") > 100) {
-			System.out.println("Price of bitcoin: " + prices.get("bitcoin"));
+			
 			if (prices.get("ethereum") > 1000) {
-				System.out.println("Price of eth: " + prices.get("ethereum"));
+				
 				return TradeResult.BUY;
 			}
 		}
@@ -29,5 +29,8 @@ public class Strategy1 extends Strategy{
 	
 	public float getPrice(HashMap<String, Float> prices) {
 		return prices.get("bitcoin");
+	}
+	public String getCoinName() {
+		return "BTC";
 	}
 }

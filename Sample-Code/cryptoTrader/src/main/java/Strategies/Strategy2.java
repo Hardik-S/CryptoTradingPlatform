@@ -28,5 +28,8 @@ public class Strategy2 extends Strategy{
 	public float getPrice(HashMap<String, Float> prices) {
 		return prices.get("tether");
 	}
+	public String getCoinName() {
+		return "USDT";
+	}
 	
 }

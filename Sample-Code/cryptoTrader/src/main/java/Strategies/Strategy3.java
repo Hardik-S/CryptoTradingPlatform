@@ -11,7 +11,7 @@ public class Strategy3 extends Strategy{
 	}
 	//@override
 	public TradeResult executeStrategy(String strategyname, HashMap<String, Float> prices) {
-		System.out.println("EOAIFUJGHNEG");
+	
 		if (!prices.containsKey("bitcoin")) {
 			return TradeResult.FAIL;
 		} if (prices.get("bitcoin") < 1000) {
@@ -26,5 +26,8 @@ public class Strategy3 extends Strategy{
 	}
 	public float getPrice(HashMap<String, Float> prices) {
 		return prices.get("bitcoin");
+	}
+	public String getCoinName() {
+		return "BTC";
 	}
 }

@@ -25,4 +25,7 @@ public class Strategy4 extends Strategy{
 	public float getPrice(HashMap<String, Float> prices) {
 		return prices.get("ethereum");
 	}
+	public String getCoinName() {
+		return "ETH";
+	}
 }
