@@ -31,6 +31,7 @@ import javax.swing.table.TableColumn;
 import Results.ActionLogHistory;
 import Results.ResultFactory;
 import cryptoTrader.main.Controller;
+import cryptoTrader.main.TradingClient;
 
 
 public class MainUI extends JFrame implements ActionListener {
@@ -184,18 +185,33 @@ public class MainUI extends JFrame implements ActionListener {
 			
 			clients = new Controller();
 			for (int count = 0; count < dtm.getRowCount(); count++){
+				
+					// checks for duplicate names
+					ArrayList<TradingClient> clientList = clients.getActiveClients();
+					for (TradingClient current : clientList) {
+						if (current.getName().equals(dtm.getValueAt(count, 0))) {
+							JOptionPane.showMessageDialog(this, "Please fill in a unique Trader name on line " + (count + 1) + ".");
+							return;
+						}
+					}
+					
+					// checks for unfilled trader names
 					Object traderObject = dtm.getValueAt(count, 0);
 					if (traderObject == null) {
 						JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
 						return;
 					}
+					
+					// checks for unfilled cryptocoins list
 					String traderName = traderObject.toString();
 					Object coinObject = dtm.getValueAt(count, 1);
 					if (coinObject == null) {
 						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
 						return;
-					}
-					String[] coinNames = coinObject.toString().split(",");
+					} 
+					String[] coinNames = coinObject.toString().replaceAll(" ", "").split(",");
+					
+					// checks for unselected strategy
 					Object strategyObject = dtm.getValueAt(count, 2);
 					if (strategyObject == null) {
 						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
@@ -216,9 +232,9 @@ public class MainUI extends JFrame implements ActionListener {
 			stats.removeAll();
 			DataVisualizationCreator creator = new DataVisualizationCreator(); //creates a new table and histogram
 			creator.createCharts(log.getHistory()); //sends the result to the data visualizer 
-		} else if ("addTableRow".equals(command)) {
+		} else if ("addTableRow".equals(command)) { // adds row to table
 			dtm.addRow(new String[3]);
-		} else if ("remTableRow".equals(command)) {
+		} else if ("remTableRow".equals(command)) { // removes from table
 			int selectedRow = table.getSelectedRow();
 			if (selectedRow != -1)
 				dtm.removeRow(selectedRow);

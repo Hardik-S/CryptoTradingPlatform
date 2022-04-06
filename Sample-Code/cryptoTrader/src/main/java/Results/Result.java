@@ -26,6 +26,10 @@ public class Result {
         this.date = date;
     }
 
+    /**
+     * Combines details of trade into a string array to be displayed on the GUI
+     * @return
+     */
     public String[] getResult () {
         String[] buffer = new String[7];
         buffer[0] = this.trader;
