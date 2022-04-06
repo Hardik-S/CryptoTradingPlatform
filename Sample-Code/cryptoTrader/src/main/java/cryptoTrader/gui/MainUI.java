@@ -33,6 +33,11 @@ import Results.ResultFactory;
 import cryptoTrader.main.Controller;
 import cryptoTrader.main.TradingClient;
 
+/**
+ * 
+ * @author Hunter Terpstra and Ryan Chan
+ *
+ */
 
 public class MainUI extends JFrame implements ActionListener {
 	/**

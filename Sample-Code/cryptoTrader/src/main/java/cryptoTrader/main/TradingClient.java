@@ -2,6 +2,12 @@ package cryptoTrader.main;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Ryan Chan
+ *
+ */
+
 public class TradingClient {
     private String clientName;
     private String[] coinList;

@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import cryptoTrader.main.TradeResult;
 
+/**
+ * 
+ * @author Hunter Terpstra and Ryan Chan
+ *
+ */
+
 public class ResultFactory {
 
     private ArrayList<Result> resultList;

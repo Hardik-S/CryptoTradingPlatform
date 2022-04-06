@@ -13,6 +13,12 @@ import javax.swing.JTextField;
 
 import cryptoTrader.gui.MainUI;
 
+/**
+ * Login UI interface
+ * @author Hunter Terpstra
+ *
+ */
+
 public class LoginUI extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;

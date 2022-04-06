@@ -5,7 +5,11 @@ import java.util.Date;
 import Strategies.Strategy;
 import cryptoTrader.main.TradeResult;
 
-
+/**
+ * 
+ * @author Hunter Terpstra, Ryan Chan
+ *
+ */
 
 public class Result {
     private String trader; // broker associated with trade

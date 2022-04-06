@@ -2,6 +2,12 @@ package Results;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Hunter Terpstra
+ *
+ */
+
 public class ActionLogHistory {
 
 	private ResultFactory resultListHistory;

@@ -3,7 +3,11 @@ package Strategies;
 import java.util.HashMap;
 import cryptoTrader.main.TradeResult;
 
-
+/**
+ * 
+ * @author Hunter Terpstra and Judy Zhu
+ *
+ */
 
 public class Strategy3 extends Strategy{
 	public Strategy3() {

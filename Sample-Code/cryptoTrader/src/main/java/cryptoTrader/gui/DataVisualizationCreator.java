@@ -36,6 +36,12 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Hunter Terpstra
+ *
+ */
+
 public class DataVisualizationCreator {
 	
 

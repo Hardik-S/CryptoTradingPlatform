@@ -1,6 +1,12 @@
 package Strategies;
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Hunter Terpstra
+ *
+ */
+
 public class StrategyFactory {
 
 	/**

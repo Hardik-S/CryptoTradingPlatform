@@ -4,6 +4,11 @@ import java.util.HashMap;
 
 import cryptoTrader.main.TradeResult;
 
+/**
+ * 
+ * @author Hunter Terpstra and Judy Zhu
+ *
+ */
 
 public abstract class Strategy {
  

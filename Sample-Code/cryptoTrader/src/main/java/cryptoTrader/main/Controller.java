@@ -16,6 +16,12 @@ import cryptoTrader.utils.DataFetcher;
 
 import java.util.HashMap;
 
+/**
+ * 
+ * @author Hunter Terpstra, Ryan Chan
+ *
+ */
+
 public class Controller {
     private ArrayList<TradingClient> activeClients;
     private HashSet<String> coins;
