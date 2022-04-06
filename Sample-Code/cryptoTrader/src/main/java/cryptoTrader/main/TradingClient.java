@@ -26,13 +26,5 @@ public class TradingClient {
     public String strategy () {
         return (this.strategy);
     }
-//    public TradeResult runStrategy (String stratName, HashMap<String, Float> prices) {
-//        // call strategy and return, must clarify with Judy
-//    	if (stratName.equals("Strategy-B")) {
-//    		Strategy stratAlg = new Strategy2(stratName, prices);
-//    		return stratAlg.executeStrategy(stratName, prices);
-//    	}
-//    	
-//        return null;
-//    }
+
 }

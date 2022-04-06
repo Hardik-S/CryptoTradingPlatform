@@ -44,16 +44,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private JPanel stats, chartPanel, tablePanel;
 
 	// Should be a reference to a separate object in actual implementation
-	private List<String> selectedList;
 
-	private JTextArea selectedTickerList;
-	private JTextArea tickerText;
-	private JTextArea BrokerText;
-	private JComboBox<String> strategyList;
-	private Map<String, List<String>> brokersTickers = new HashMap<>();
-	private Map<String, String> brokersStrategies = new HashMap<>();
-	private List<String> selectedTickers = new ArrayList<>();
-	private String selectedStrategy = "";
 	private DefaultTableModel dtm;
 	private JTable table;
 	private Controller clients;
@@ -221,9 +212,7 @@ public class MainUI extends JFrame implements ActionListener {
 					//System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
 					
 					clients.createClient(traderName, coinNames, strategyName); //creates a new broker based on inputed data
-				
-					
-					
+						
 	        }
 			
 			ResultFactory result = clients.runTrades(); //perform trade button
