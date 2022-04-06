@@ -3,7 +3,7 @@ package cryptoTrader.main;
 import java.util.HashMap;
 
 public class Strategy3 extends Strategy{
-	public Strategy3(String strategyname, HashMap<String, Float> prices) {
+	public Strategy3() {
 		
 	}
 	//@override

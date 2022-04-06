@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import cryptoTrader.main.ResultFactory;
-import cryptoTrader.main.SubsystemUI;
+import cryptoTrader.main.Controller;
 import cryptoTrader.utils.AvailableCryptoList;
 import cryptoTrader.utils.DataVisualizationCreator;
 
@@ -56,7 +56,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private String selectedStrategy = "";
 	private DefaultTableModel dtm;
 	private JTable table;
-	private SubsystemUI clients;
+	private Controller clients;
 
 	public static MainUI getInstance() {
 		if (instance == null)
@@ -188,7 +188,7 @@ public class MainUI extends JFrame implements ActionListener {
 		String command = e.getActionCommand();
 		if ("refresh".equals(command)) {
 			
-			clients = new SubsystemUI();
+			clients = new Controller();
 			for (int count = 0; count < dtm.getRowCount(); count++){
 					Object traderObject = dtm.getValueAt(count, 0);
 					if (traderObject == null) {
