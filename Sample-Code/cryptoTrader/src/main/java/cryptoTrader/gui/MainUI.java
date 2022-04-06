@@ -28,6 +28,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
+import cryptoTrader.main.ResultFactory;
+import cryptoTrader.main.SubsystemUI;
+import cryptoTrader.utils.AvailableCryptoList;
 import cryptoTrader.utils.DataVisualizationCreator;
 
 public class MainUI extends JFrame implements ActionListener {
@@ -53,6 +56,7 @@ public class MainUI extends JFrame implements ActionListener {
 	private String selectedStrategy = "";
 	private DefaultTableModel dtm;
 	private JTable table;
+	private SubsystemUI clients;
 
 	public static MainUI getInstance() {
 		if (instance == null)
@@ -67,7 +71,7 @@ public class MainUI extends JFrame implements ActionListener {
 		super("Crypto Trading Tool");
 
 		// Set top bar
-
+		
 
 		JPanel north = new JPanel();
 
@@ -183,6 +187,8 @@ public class MainUI extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String command = e.getActionCommand();
 		if ("refresh".equals(command)) {
+			
+			clients = new SubsystemUI();
 			for (int count = 0; count < dtm.getRowCount(); count++){
 					Object traderObject = dtm.getValueAt(count, 0);
 					if (traderObject == null) {
@@ -202,11 +208,32 @@ public class MainUI extends JFrame implements ActionListener {
 						return;
 					}
 					String strategyName = strategyObject.toString();
-					System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
+					//System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
+					
+					clients.createClient(traderName, coinNames, strategyName);
+					System.out.println("\nCurrent: ");
+					for (int i=0; i<clients.getActiveClients().size(); i++) {
+						System.out.print("Trading Broker: " + clients.getActiveClients().get(i).getName() + " | Strategy: " + clients.getActiveClients().get(i).strategy() );
+						System.out.print(" | Coins: ");
+						for (int j=0; j<clients.getActiveClients().get(i).getCoins().length; j++) {
+							System.out.print("\"" + clients.getActiveClients().get(i).getCoins()[j] + "\" ");
+						}
+						System.out.println();
+					}
+					
+					
+					
 	        }
+			
+			ResultFactory result = clients.runTrades();
+			System.out.println("result length = " + result.getResults().size());
+			for (int i=0;i<7;i++) {
+				System.out.print(result.getResults().get(0).getResult()[i] + ", ");
+			}
+
 			stats.removeAll();
 			DataVisualizationCreator creator = new DataVisualizationCreator();
-			creator.createCharts();
+			creator.createCharts(result);
 		} else if ("addTableRow".equals(command)) {
 			dtm.addRow(new String[3]);
 		} else if ("remTableRow".equals(command)) {

@@ -7,7 +7,7 @@ import java.util.HashMap;
 public abstract class Strategy {
     private String[] usedCoins;
     
-    public abstract TradeResult executeStrategy(String strategyname, HashMap<String, Integer> prices);
+    public abstract TradeResult executeStrategy(String strategyname, HashMap<String, Float> prices);
 
     @Override
     public String toString () {
@@ -15,5 +15,7 @@ public abstract class Strategy {
         
         return (buffer);
     }
+    public abstract int getQuantity();
+    public abstract float getPrice(HashMap<String, Float> prices);
 
 }

@@ -30,58 +30,42 @@ import org.jfree.data.time.TimeSeriesCollection;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.ArrayList;
 
 import cryptoTrader.gui.MainUI;
+import cryptoTrader.main.Result;
+import cryptoTrader.main.ResultFactory;
 
 public class DataVisualizationCreator {
 	
-	public void createCharts() {
-//		createTextualOutput();
-		createTableOutput();
-//		createTimeSeries();
-//		createScatter();
-		createBar();
+	public void createCharts(ResultFactory results) {
+
+		createTableOutput(results);
+		createBar(results);
+		
 	}
 
-	private void createTextualOutput() {
-//		DefaultTableModel dtm = new  DefaultTableModel(new Object[] {"Broker Name", "Ticker List", "Strategy Name"}, 1);
-//		JTable table = new JTable(dtm);
-//		//table.setPreferredSize(new Dimension(600, 300));
-//		dtm.e
-//		JScrollPane scrollPane = new JScrollPane(table);
-//		scrollPane.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
-//                "Broker Actions",
-//                TitledBorder.CENTER,
-//                TitledBorder.TOP));
-//		
-//	
-//		
-//		scrollPane.setPreferredSize(new Dimension(800, 300));
-//		table.setFillsViewportHeight(true);;
-		
-//		MainUI.getInstance().updateStats(scrollPane);
-	}
 	
-	private void createTableOutput() {
+	private void createTableOutput(ResultFactory resultList) {
 		// Dummy dates for demo purposes. These should come from selection menu
 		Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"};
 		
 		// Dummy data for demo purposes. These should come from actual fetcher
-		Object[][] data = {
-				{"Trader-5", "Strategy-A", "ETH", "Buy", "500", "150.3","13-January-2022"},
-				{"Trader-2", "Strategy-B", "BTC", "Sell", "200", "50.2","13-January-2022"},
-				{"Trader-3", "Strategy-C", "USDT", "Buy", "1000", "2.59","15-January-2022"},
-				{"Trader-1", "Strategy-A", "USDC", "Buy", "500", "150.3","16-January-2022"},
-				{"Trader-2", "Strategy-B", "ADA", "Sell", "200", "50.2","16-January-2022"},
-				{"Trader-3", "Strategy-C", "SOL", "Buy", "1000", "2.59","17-January-2022"},
-				{"Trader-1", "Strategy-A", "ONE", "Buy", "500", "150.3","17-January-2022"},
-				{"Trader-2", "Strategy-B", "MANA", "Sell", "200", "50.2","17-January-2022"},
-				{"Trader-3", "Strategy-C", "AVAX", "Buy", "1000", "2.59","19-January-2022"},
-				{"Trader-1", "Strategy-A", "LUNA", "Buy", "500", "150.3","19-January-2022"},
-				{"Trader-2", "Strategy-B", "FTM", "Sell", "200", "50.2","19-January-2022"},
-				{"Trader-3", "Strategy-C", "HNT", "Buy", "1000", "2.59","20-January-2022"}
-		};
-		Object[][] data2;
+//		Object[][] data = {
+//				{"Trader-5", "Strategy-A", "ETH", "Buy", "500", "150.3","13-January-2022"},
+//				{"Trader-2", "Strategy-B", "BTC", "Sell", "200", "50.2","13-January-2022"},
+//				{"Trader-3", "Strategy-C", "USDT", "Buy", "1000", "2.59","15-January-2022"},
+//				{"Trader-1", "Strategy-A", "USDC", "Buy", "500", "150.3","16-January-2022"},
+//				{"Trader-2", "Strategy-B", "ADA", "Sell", "200", "50.2","16-January-2022"},
+//				{"Trader-3", "Strategy-C", "SOL", "Buy", "1000", "2.59","17-January-2022"},
+//				{"Trader-1", "Strategy-A", "ONE", "Buy", "500", "150.3","17-January-2022"},
+//				{"Trader-2", "Strategy-B", "MANA", "Sell", "200", "50.2","17-January-2022"},
+//				{"Trader-3", "Strategy-C", "AVAX", "Buy", "1000", "2.59","19-January-2022"},
+//				{"Trader-1", "Strategy-A", "LUNA", "Buy", "500", "150.3","19-January-2022"},
+//				{"Trader-2", "Strategy-B", "FTM", "Sell", "200", "50.2","19-January-2022"},
+//				{"Trader-3", "Strategy-C", "HNT", "Buy", "1000", "2.59","20-January-2022"}
+//		};
+		Object[][] data = resultList.getResultObject();
 
 		JTable table = new JTable(data, columnNames);
 		//table.setPreferredSize(new Dimension(600, 300));
@@ -100,149 +84,27 @@ public class DataVisualizationCreator {
 		MainUI.getInstance().updateStats(scrollPane);
 	}
 
-	private void createTimeSeries() {
-		TimeSeries series1 = new TimeSeries("Bitcoin - Daily");
-		// figure out how to use today's date to create new Day object
-		// figure out how to talk to data fetcher from here
-		// fill in price value 
-		LocalDate currentdate = LocalDate.now();
-		int currentDay = currentdate.getDayOfMonth();
-		int currentMonth = YearMonth.now().getMonthValue();
-		int currentYear = currentdate.getYear();
-		DataFetcher df = new DataFetcher();
-
-		double price = df.getPriceForCoin("BTC", currentdate.toString());
-		series1.add(new Day(currentDay, currentMonth, currentYear), price);
-
-
-		// series1.add(new Day(13, 9, 2021), 50368.67);
-		// series1.add(new Day(14, 9, 2021), 51552.05);
-		// series1.add(new Day(15, 9, 2021), 47228.30);
-		// series1.add(new Day(16, 9, 2021), 45263.90);
-		// series1.add(new Day(17, 9, 2021), 46955.41);
-		
-		TimeSeries series2 = new TimeSeries("Ethereum - Daily");
-		price = df.getPriceForCoin("ETH", currentdate.toString());
-		series2.add(new Day(currentDay, currentMonth, currentYear), price);
-
-		// series2.add(new Day(13, 9, 2021), 3912.28);
-		// series2.add(new Day(14, 9, 2021), 3927.27);
-		// series2.add(new Day(15, 9, 2021), 3460.48);
-		// series2.add(new Day(16, 9, 2021), 3486.09);
-		// series2.add(new Day(17, 9, 2021), 3550.29);
-
-		TimeSeries series3 = new TimeSeries("Cardano - Daily");
-		price = df.getPriceForCoin("ADA", currentdate.toString());
-		series3.add(new Day(currentDay, currentMonth, currentYear), price);
-
-		// series3.add(new Day(13, 9, 2021), 2.87);
-		// series3.add(new Day(14, 9, 2021), 2.84);
-		// series3.add(new Day(15, 9, 2021), 2.41);
-		// series3.add(new Day(16, 9, 2021), 2.43);
-		// series3.add(new Day(17, 9, 2021), 2.59);
-
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		dataset.addSeries(series1);
-		dataset.addSeries(series2);
-		dataset.addSeries(series3);
-
-		XYPlot plot = new XYPlot();
-		XYSplineRenderer splinerenderer1 = new XYSplineRenderer();
-		
-		plot.setDataset(0, dataset);
-		plot.setRenderer(0, splinerenderer1);
-		DateAxis domainAxis = new DateAxis("");
-		plot.setDomainAxis(domainAxis);
-		plot.setRangeAxis(new LogAxis("Price(USD)"));
-
-		//plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-		//plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
-		//plot.mapDatasetToRangeAxis(2, 2);// 3rd dataset to 3rd y-axis
-		
-		JFreeChart chart = new JFreeChart("Daily Price Line Chart", new Font("Serif", java.awt.Font.BOLD, 18), plot,
-				true);
-
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.setPreferredSize(new Dimension(800, 300));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		chartPanel.setBackground(Color.white);
-		
-		MainUI.getInstance().updateStats(chartPanel);
-	}
 	
-	private void createScatter() {
-		TimeSeries series1 = new TimeSeries("Bitcoin - Daily");
-		LocalDate currentdate = LocalDate.now();
-		int currentDay = currentdate.getDayOfMonth();
-		int currentMonth = YearMonth.now().getMonthValue();
-		int currentYear = currentdate.getYear();
-		DataFetcher df = new DataFetcher();
-
-		double price = df.getPriceForCoin("BTC", currentdate.toString());
-		series1.add(new Day(currentDay, currentMonth, currentYear), price);
-		// series1.add(new Day(13, 9, 2021), 50368.67);
-		// series1.add(new Day(14, 9, 2021), 51552.05);
-		// series1.add(new Day(15, 9, 2021), 47228.30);
-		// series1.add(new Day(16, 9, 2021), 45263.90);
-		// series1.add(new Day(17, 9, 2021), 46955.41);
-		
-		TimeSeries series2 = new TimeSeries("Ethereum - Daily");
-		price = df.getPriceForCoin("BTC", currentdate.toString());
-		series2.add(new Day(currentDay, currentMonth, currentYear), price);
-		// series2.add(new Day(13, 9, 2021), 3912.28);
-		// series2.add(new Day(14, 9, 2021), 3927.27);
-		// series2.add(new Day(15, 9, 2021), 3460.48);
-		// series2.add(new Day(16, 9, 2021), 3486.09);
-		// series2.add(new Day(17, 9, 2021), 3550.29);
-
-		TimeSeries series3 = new TimeSeries("Cardano - Daily");
-		price = df.getPriceForCoin("BTC", currentdate.toString());
-		series3.add(new Day(currentDay, currentMonth, currentYear), price);
-		// series3.add(new Day(13, 9, 2021), 2.87);
-		// series3.add(new Day(14, 9, 2021), 2.84);
-		// series3.add(new Day(15, 9, 2021), 2.41);
-		// series3.add(new Day(16, 9, 2021), 2.43);
-		// series3.add(new Day(17, 9, 2021), 2.59);
-
-		TimeSeriesCollection dataset = new TimeSeriesCollection();
-		dataset.addSeries(series1);
-		dataset.addSeries(series2);
-		dataset.addSeries(series3);
-
-		XYPlot plot = new XYPlot();
-		XYItemRenderer itemrenderer1 = new XYLineAndShapeRenderer(false, true);
-
-		plot.setDataset(0, dataset);
-		plot.setRenderer(0, itemrenderer1);
-		DateAxis domainAxis = new DateAxis("");
-		plot.setDomainAxis(domainAxis);
-		plot.setRangeAxis(new LogAxis("Price(USD)"));
-
-		//plot.mapDatasetToRangeAxis(0, 0);// 1st dataset to 1st y-axis
-		//plot.mapDatasetToRangeAxis(1, 1); // 2nd dataset to 2nd y-axis
-		
-		JFreeChart scatterChart = new JFreeChart("Daily Price Scatter Chart",
-				new Font("Serif", java.awt.Font.BOLD, 18), plot, true);
-
-		ChartPanel chartPanel = new ChartPanel(scatterChart);
-		chartPanel.setPreferredSize(new Dimension(600, 300));
-		chartPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		chartPanel.setBackground(Color.white);
-		MainUI.getInstance().updateStats(chartPanel);
-	}
-	
-	private void createBar() {
+	private void createBar(ResultFactory results) {
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-//		Those are hard-coded values!!!! 
-//		You will have to come up with a proper datastructure to populate the BarChart with live data!
+		Object[][] data = results.getResultObject();
+		
+		String clientName, stratName;
+		for (Object[] datum : data) {
+			if (datum[3] != null && datum[3] != "Fail") {
+				clientName = datum[0].toString();
+				stratName = datum[1].toString();
+				if (isIn(dataset, clientName, stratName)) {
+					dataset.incrementValue(1, clientName, stratName);
+				}
+				else {
+					dataset.setValue(1, clientName, stratName);
+				}
 
-// 		I don't know what data structure would be approrpriate here
-		dataset.setValue(6, "Trader-1", "Strategy-A");
-		dataset.setValue(5, "Trader-2", "Strategy-B");
-		dataset.setValue(0, "Trader-3", "Strategy-E");
-		dataset.setValue(1, "Trader-4", "Strategy-C");
-		dataset.setValue(10, "Trader-5", "Strategy-D");
+			}
+		}
+		
 
 		CategoryPlot plot = new CategoryPlot();
 		BarRenderer barrenderer1 = new BarRenderer();
@@ -267,5 +129,12 @@ public class DataVisualizationCreator {
 		chartPanel.setBackground(Color.white);
 		MainUI.getInstance().updateStats(chartPanel);
 	}
-
+	  private boolean isIn(DefaultCategoryDataset dataset, String clientName, String stratName) {
+        try {
+            dataset.getValue(clientName, stratName);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -3,20 +3,27 @@ package cryptoTrader.main;
 import java.util.HashMap;
 
 public class Strategy2 extends Strategy{
-	public Strategy2(String strategyname, HashMap<String, Integer> prices) {
-		executeStrategy(strategyname, prices);
+	public Strategy2(String strategyname, HashMap<String, Float> prices) {
+		
 	}
 	//@override
-	public TradeResult executeStrategy(String strategyname, HashMap<String, Integer> prices) {
-		if ((prices.size() < 3) || !((prices.containsKey("BTC") & (prices.containsKey("ETH") & (prices.containsKey("USDT")))))) {
+	public TradeResult executeStrategy(String strategyname, HashMap<String, Float> prices) {
+		if ((prices.size() < 3) || !((prices.containsKey("bitcoin") && (prices.containsKey("ethereum") && (prices.containsKey("tether")))))) {
 			return TradeResult.FAIL;
-		} if (prices.get("BTC") > 10000) {
-			if (prices.get("ETH") > 100) {
-				if (prices.get("USDT") > 5) return TradeResult.TRADE;
+		} if (prices.get("bitcoin") > 10000) {
+			if (prices.get("ethereum") > 100) {
+				if (prices.get("tether") < 5) return TradeResult.SELL;
 			}
 		}
 
-		return TradeResult.NOTRADE;
+		return TradeResult.FAIL;
+	}
+	public int getQuantity() {
+		return 200;
+	}
+	@Override
+	public float getPrice(HashMap<String, Float> prices) {
+		return prices.get("tether");
 	}
 	
 }

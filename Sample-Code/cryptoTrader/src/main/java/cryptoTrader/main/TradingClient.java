@@ -11,7 +11,7 @@ public class TradingClient {
         this.clientName = name; this.coinList = coinList; this.strategy = strategy;
     }
 
-    public String name () {
+    public String getName () {
         return (this.clientName);
     }
     public String[] getCoins () {
@@ -20,8 +20,13 @@ public class TradingClient {
     public String strategy () {
         return (this.strategy);
     }
-    public TradeResult runStrategy (HashMap<String, Float> prices) {
-        // call strategy and return, must clarify with Judy
-        return (TradeResult.TRADE);
-    }
+//    public TradeResult runStrategy (String stratName, HashMap<String, Float> prices) {
+//        // call strategy and return, must clarify with Judy
+//    	if (stratName.equals("Strategy-B")) {
+//    		Strategy stratAlg = new Strategy2(stratName, prices);
+//    		return stratAlg.executeStrategy(stratName, prices);
+//    	}
+//    	
+//        return null;
+//    }
 }
