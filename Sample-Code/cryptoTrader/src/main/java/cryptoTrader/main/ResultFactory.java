@@ -21,6 +21,7 @@ public class ResultFactory {
     	for (Result i : resultList) entries.add(i.getResult());
     	return entries;
     }
+
     public ArrayList<Result> getResults() {
     	return resultList;
     }
@@ -53,3 +54,6 @@ public class ResultFactory {
     	return resultObj;
     }
 }
+
+}
+
