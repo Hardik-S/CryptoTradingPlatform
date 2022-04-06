@@ -31,6 +31,7 @@ import javax.swing.table.TableColumn;
 import Results.ActionLogHistory;
 import Results.ResultFactory;
 import cryptoTrader.main.Controller;
+import cryptoTrader.main.TradingClient;
 
 
 public class MainUI extends JFrame implements ActionListener {
@@ -184,6 +185,14 @@ public class MainUI extends JFrame implements ActionListener {
 			
 			clients = new Controller();
 			for (int count = 0; count < dtm.getRowCount(); count++){
+				
+					ArrayList<TradingClient> clientList = clients.getActiveClients();
+					for (TradingClient current : clientList) {
+						if (current.getName().equals(dtm.getValueAt(count, 0))) {
+							JOptionPane.showMessageDialog(this, "Please fill in a unique Trader name on line " + (count + 1) + ".");
+							return;
+						}
+					}
 					Object traderObject = dtm.getValueAt(count, 0);
 					if (traderObject == null) {
 						JOptionPane.showMessageDialog(this, "please fill in Trader name on line " + (count + 1) );
@@ -195,7 +204,7 @@ public class MainUI extends JFrame implements ActionListener {
 						JOptionPane.showMessageDialog(this, "please fill in cryptocoin list on line " + (count + 1) );
 						return;
 					}
-					String[] coinNames = coinObject.toString().split(",");
+					String[] coinNames = coinObject.toString().replaceAll(" ", "").split(",");
 					Object strategyObject = dtm.getValueAt(count, 2);
 					if (strategyObject == null) {
 						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
