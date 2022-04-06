@@ -4,16 +4,22 @@ import java.util.ArrayList;
 
 public class ActionLogHistory {
 
-	private ArrayList<Result> resultListHistory;
+	private ResultFactory resultListHistory;
 
     public ActionLogHistory() {
-        this.resultListHistory = new ArrayList<Result>();
+        this.resultListHistory = new ResultFactory();
     }
     
-    public ArrayList<Result> getHistory() {
+    public ResultFactory getHistory() {
     	return resultListHistory;
     }
     
-	
+	public void addToResultHistory(ResultFactory newResult) {
+		
+		for (Result result: newResult.getResults()) {
+			resultListHistory.getResults().add(result);
+		}
+		
+	}
 	
 }
