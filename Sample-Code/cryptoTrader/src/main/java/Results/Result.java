@@ -90,11 +90,11 @@ public class Result {
             
         case SELL:
         	return "Sell";
-      
-        case FAIL:
-        	return "Fail";
+        
+        default:
+            return "Fail";
     }
-    	return "Fail";
+    	
     }
 
     /**

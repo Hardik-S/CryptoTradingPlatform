@@ -213,9 +213,7 @@ public class MainUI extends JFrame implements ActionListener {
 						JOptionPane.showMessageDialog(this, "please fill in strategy name on line " + (count + 1) );
 						return;
 					}
-					String strategyName = strategyObject.toString();
-					//System.out.println(traderName + " " + Arrays.toString(coinNames) + " " + strategyName);
-					
+					String strategyName = strategyObject.toString();				
 					clients.createClient(traderName, coinNames, strategyName); //creates a new broker based on inputed data
 						
 	        }
