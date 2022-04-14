@@ -44,7 +44,9 @@ import java.util.ArrayList;
 
 public class DataVisualizationCreator {
 	
-
+	/**
+	 * Void method to create the chart for the user given a results object
+	 */
 	public void createCharts(ResultFactory results) {
 
 		createTableOutput(results);
@@ -52,7 +54,9 @@ public class DataVisualizationCreator {
 		
 	}
 
-	
+	/**
+	 * Void method to create tableoutput specifically. 
+	 */
 	private void createTableOutput(ResultFactory resultList) {
 		// Dummy dates for demo purposes. These should come from selection menu
 		Object[] columnNames = {"Trader","Strategy","CryptoCoin","Action","Quantity","Price","Date"};
@@ -60,22 +64,21 @@ public class DataVisualizationCreator {
 		Object[][] data = resultList.getResultObject(); // string array of each object and the fields within each
 
 		JTable table = new JTable(data, columnNames);
-		//table.setPreferredSize(new Dimension(600, 300));
 		
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBorder (BorderFactory.createTitledBorder (BorderFactory.createEtchedBorder (),
-                "Trader Actions",
-                TitledBorder.CENTER,
-                TitledBorder.TOP));
+                "Trader Actions", TitledBorder.CENTER, TitledBorder.TOP));
 		
-
 		scrollPane.setPreferredSize(new Dimension(800, 300));
 		table.setFillsViewportHeight(true);;
 		
 		MainUI.getInstance().updateStats(scrollPane);
 	}
 
-	
+	/**
+	 * 
+	 * @param results
+	 */
 	private void createBar(ResultFactory results) {
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
