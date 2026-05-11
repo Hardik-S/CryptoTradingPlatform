@@ -43,6 +43,8 @@
   - Syntax check via `node --check modern/app.js` and `git diff --check`.
   - Local smoke by serving this folder and opening `modern/index.html`.
 
-## Next logical upgrade
-- Add a copy-to-clipboard action for the latest run pack.
-- Add a Vercel static preview and mobile trend rendering check.
+## This continuation run
+- Added run-pack copy-to-clipboard action and run-pack manifest panel.
+- Added manifest persistence/visibility so users can confirm run-pack state (count, source, timestamp) before sharing.
+- Preserved existing audit-export/import flows and added quick metadata recovery after clears/imports.
+- Next safe action: add a shareable one-click scenario preset panel and optional Vercel smoke validation.

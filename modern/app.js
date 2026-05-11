@@ -7,6 +7,7 @@ const runTradeBtn = document.getElementById("runTrade");
 const runExportBtn = document.getElementById("runExport");
 const runExportPackBtn = document.getElementById("runExportPack");
 const runImportPackBtn = document.getElementById("runImportPack");
+const runCopyPackBtn = document.getElementById("runCopyPack");
 const runPackFile = document.getElementById("runPackFile");
 const rowsBody = document.getElementById("clientRowsBody");
 const resultsBody = document.getElementById("resultsBody");
@@ -16,6 +17,7 @@ const statusPill = document.getElementById("statusPill");
 const runHistory = document.getElementById("runHistory");
 const historyClear = document.getElementById("historyClear");
 const trendContainer = document.getElementById("runTrend");
+const runPackManifest = document.getElementById("runPackManifest");
 const marketSeedInput = document.getElementById("marketSeed");
 const marketDateInput = document.getElementById("marketDate");
 const preferLiveInput = document.getElementById("preferLive");
@@ -31,6 +33,20 @@ const BASE_MARKET = Object.freeze({ BTC: 62000, ETH: 3200, USDT: 1 });
 
 function normalisedSymbol(raw) {
   return raw.trim().toUpperCase();
+}
+
+function renderRunPackManifest(manifest) {
+  if (!runPackManifest) return;
+  if (!manifest) {
+    runPackManifest.textContent = "No exported/imported run pack metadata yet.";
+    runCopyPackBtn.disabled = true;
+    return;
+  }
+  const origin = manifest.source ? `source ${manifest.source}` : "local";
+  const count = Number(manifest.runCount || 0);
+  const dateText = manifest.timestamp ? new Date(manifest.timestamp).toLocaleString() : "unknown";
+  runPackManifest.textContent = `Run pack (${origin}) • ${count} run(s) • ${dateText}`;
+  runCopyPackBtn.disabled = false;
 }
 
 function strategyEvaluator({ strategy, coinPrices }) {
@@ -401,6 +417,54 @@ function buildRunPack() {
   };
 }
 
+function hydrateRunPackManifest() {
+  try {
+    const raw = localStorage.getItem(runPackManifestKey);
+    if (!raw) {
+      renderRunPackManifest(null);
+      return;
+    }
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") {
+      renderRunPackManifest(null);
+      return;
+    }
+    renderRunPackManifest({
+      source: parsed.source || "local",
+      runCount: Number(parsed.runCount || 0),
+      timestamp: parsed.timestamp || parsed.exportedAt || new Date().toISOString(),
+    });
+  } catch {
+    renderRunPackManifest(null);
+  }
+}
+
+function persistManifest(payload) {
+  const manifest = {
+    timestamp: payload.exportedAt || new Date().toISOString(),
+    source: payload.repository || "local",
+    runCount: Number(payload.runs?.length || 0),
+  };
+  localStorage.setItem(runPackManifestKey, JSON.stringify(manifest));
+  renderRunPackManifest(manifest);
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  const temp = document.createElement("textarea");
+  temp.value = text;
+  temp.style.position = "fixed";
+  temp.style.opacity = "0";
+  document.body.appendChild(temp);
+  temp.focus();
+  temp.select();
+  document.execCommand("copy");
+  document.body.removeChild(temp);
+  return Promise.resolve();
+}
+
 function downloadJson(filename, payload) {
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" });
   const link = document.createElement("a");
@@ -413,10 +477,22 @@ function downloadJson(filename, payload) {
 function exportRunPack() {
   const payload = buildRunPack();
   downloadJson(`legacy-crypto-run-pack-${Date.now()}.json`, payload);
-  localStorage.setItem(runPackManifestKey, JSON.stringify({
-    exportedAt: payload.exportedAt,
-    runCount: payload.runs.length,
-  }));
+  persistManifest(payload);
+}
+
+function copyRunPack() {
+  const payload = buildRunPack();
+  const text = JSON.stringify(payload, null, 2);
+  copyToClipboard(text)
+    .then(() => {
+      persistManifest(payload);
+      statusPill.textContent = "Run pack copied to clipboard.";
+      statusPill.className = "status-ok";
+    })
+    .catch(() => {
+      statusPill.textContent = "Copy blocked. Use Export run pack instead.";
+      statusPill.className = "status-bad";
+    });
 }
 
 function readRunPack(file) {
@@ -464,11 +540,11 @@ async function importRunPack() {
     renderTrend(next);
     statusPill.textContent = `Run pack imported with ${next.length} runs.`;
     statusPill.className = "status-ok";
-    localStorage.setItem(runPackManifestKey, JSON.stringify({
-      importedAt: new Date().toISOString(),
-      runCount: next.length,
-      source: payload.repository || "unknown",
-    }));
+    persistManifest({
+      exportedAt: payload.exportedAt || new Date().toISOString(),
+      repository: payload.repository || "unknown",
+      runs: next,
+    });
   } catch (error) {
     statusPill.textContent = `Import failed: ${error.message}`;
     statusPill.className = "status-bad";
@@ -521,6 +597,7 @@ runExportBtn.addEventListener("click", exportCSV);
 historyClear.addEventListener("click", () => {
   localStorage.removeItem(storageKey);
   localStorage.removeItem(runPackManifestKey);
+  renderRunPackManifest(null);
   renderHistory([]);
   renderTrend([]);
   statusPill.textContent = "History cleared.";
@@ -533,6 +610,10 @@ seedBtn.addEventListener("click", () => {
 
 rowsBody.addEventListener("input", () => persistRows());
 rowsBody.addEventListener("change", () => persistRows());
+runCopyPackBtn.addEventListener("click", copyRunPack);
+
+hydrateRunPackManifest();
+hydrateFromStorage();
 
 loginForm.addEventListener("submit", (event) => {
   event.preventDefault();

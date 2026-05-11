@@ -47,6 +47,7 @@
             <button type="button" id="runExport" class="ghost">Export results CSV</button>
             <button type="button" id="runExportPack" class="ghost">Export run pack (JSON)</button>
             <button type="button" id="runImportPack" class="ghost">Import run pack (JSON)</button>
+            <button type="button" id="runCopyPack" class="ghost" disabled>Copy run pack (JSON)</button>
             <input id="runPackFile" type="file" accept="application/json" hidden />
           </div>
           <p class="subtitle">
@@ -135,6 +136,10 @@
               <div id="runTrend" class="trend" role="list"></div>
             </div>
           </div>
+        </section>
+        <section class="panel">
+          <h2>Run pack manifest</h2>
+          <p id="runPackManifest" class="run-pack-manifest">No exported/imported run pack metadata yet.</p>
         </section>
       </section>
     </main>
