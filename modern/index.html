@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Crypto Trading Surface - Legacy Rebuild</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header>
+        <p class="eyebrow">Legacy Repo Rebuilder</p>
+        <h1>Crypto Trading Surface</h1>
+        <p>
+          Modernized demo for the original Swing trading platform.
+          Core trade logic is preserved and now rendered as a
+          browser-first workflow with local persistence and audit history.
+        </p>
+      </header>
+
+      <section class="panel auth-panel">
+        <h2>Secure entry (demo)</h2>
+        <p>Use one of the legacy pairs or your own; this keeps the same login behavior in a modern interface.</p>
+        <form id="loginForm" class="auth-form" novalidate>
+          <label>
+            Username
+            <input type="text" id="username" autocomplete="username" />
+          </label>
+          <label>
+            Password
+            <input type="password" id="password" autocomplete="current-password" />
+          </label>
+          <div class="auth-actions">
+            <button type="submit">Enter</button>
+            <button type="button" id="seed-login" class="ghost">Fill demo credentials</button>
+          </div>
+          <p id="loginError" class="error" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section id="appRoot" class="app-root" hidden>
+        <section class="panel controls">
+          <div class="toolbar">
+            <h2>Trading run setup</h2>
+            <button type="button" id="addRow">Add trader row</button>
+            <button type="button" id="runTrade">Run legacy trade simulation</button>
+            <button type="button" id="runExport" class="ghost">Export results CSV</button>
+          </div>
+          <p class="subtitle">
+            Trader rows, coin lists, and strategy choice mirror the legacy behavior.
+            Coin list expects BTC/ETH/USDT symbols (comma-separated).
+          </p>
+          <div class="strategy-note">
+            Strategy-A: buy BTC if BTC &gt; 100 and ETH &gt; 1000
+            <span>•</span>
+            Strategy-B: sell USDT if BTC &gt; 10000, ETH &gt; 100, and USDT &lt; 5
+            <span>•</span>
+            Strategy-C: buy BTC if BTC &lt; 1000
+            <span>•</span>
+            Strategy-D: sell ETH if ETH &lt; 200
+          </div>
+          <div class="row-table-wrap">
+            <table id="clientRows" aria-label="Trading client rows">
+              <thead>
+                <tr>
+                  <th>Trading Client</th>
+                  <th>Coin List</th>
+                  <th>Strategy</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="clientRowsBody"></tbody>
+            </table>
+          </div>
+          <div class="market-bar">
+            <label>
+              Market seed
+              <input id="marketSeed" type="number" value="2026" />
+            </label>
+            <label>
+              Date / label
+              <input id="marketDate" type="date" />
+            </label>
+            <label class="toggle">
+              <input type="checkbox" id="preferLive" />
+              Try live CoinGecko fetch if available
+            </label>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Summary metrics</h2>
+          <div id="metrics" class="metric-grid" aria-live="polite"></div>
+        </section>
+
+        <section class="panel">
+          <h2>Action results</h2>
+          <div class="row-table-wrap">
+            <table id="resultsTable" aria-label="Run results">
+              <thead>
+                <tr>
+                  <th>Trader</th>
+                  <th>Strategy</th>
+                  <th>CryptoCoin</th>
+                  <th>Action</th>
+                  <th>Quantity</th>
+                  <th>Price</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+          <div id="statusPill"></div>
+        </section>
+
+        <section class="panel">
+          <div class="split">
+            <div>
+              <h2>Strategy success bars</h2>
+              <div id="actionBars" class="bars" role="list"></div>
+            </div>
+            <div>
+              <h2>Run history</h2>
+              <ul id="runHistory"></ul>
+              <div class="toolbar">
+                <button type="button" id="historyClear" class="ghost">Clear history</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
