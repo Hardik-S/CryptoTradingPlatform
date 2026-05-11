@@ -5,6 +5,9 @@ const seedBtn = document.getElementById("seed-login");
 const addRowBtn = document.getElementById("addRow");
 const runTradeBtn = document.getElementById("runTrade");
 const runExportBtn = document.getElementById("runExport");
+const runExportPackBtn = document.getElementById("runExportPack");
+const runImportPackBtn = document.getElementById("runImportPack");
+const runPackFile = document.getElementById("runPackFile");
 const rowsBody = document.getElementById("clientRowsBody");
 const resultsBody = document.getElementById("resultsBody");
 const metricsContainer = document.getElementById("metrics");
@@ -12,12 +15,15 @@ const barsContainer = document.getElementById("actionBars");
 const statusPill = document.getElementById("statusPill");
 const runHistory = document.getElementById("runHistory");
 const historyClear = document.getElementById("historyClear");
+const trendContainer = document.getElementById("runTrend");
 const marketSeedInput = document.getElementById("marketSeed");
 const marketDateInput = document.getElementById("marketDate");
 const preferLiveInput = document.getElementById("preferLive");
 
-const storageKey = "legacy-rebuild-crypto-trading-history-v1";
+const storageKey = "legacy-rebuild-crypto-trading-history-v2";
+const legacyStorageKey = "legacy-rebuild-crypto-trading-history-v1";
 const rowStorageKey = "legacy-rebuild-crypto-trading-rows-v1";
+const runPackManifestKey = "legacy-rebuild-crypto-trading-pack-v2";
 const credentialList = new Set(["andrew1:hockeyfan1", "drew2:hoolahoop98", "justin5:footballfan4", "1:2"]);
 
 const STRATEGIES = ["Strategy-A", "Strategy-B", "Strategy-C", "Strategy-D"];
@@ -203,16 +209,65 @@ function renderHistory(entries) {
   }
   entries.slice(-8).reverse().forEach((entry) => {
     const li = document.createElement("li");
-    li.textContent = `${entry.at}: total=${entry.total}, buys=${entry.buys}, sells=${entry.sells}, fails=${entry.fails}`;
+    const seed = entry.seed ? `, seed=${entry.seed}` : "";
+    li.textContent = `${entry.at}: total=${entry.total}, buys=${entry.buys}, sells=${entry.sells}, fails=${entry.fails}${seed}`;
     runHistory.appendChild(li);
   });
 }
 
+function renderTrend(entries) {
+  trendContainer.innerHTML = "";
+  if (!entries.length) {
+    trendContainer.innerHTML = "<div class='trend-row'><p>No trend data available yet.</p></div>";
+    return;
+  }
+  const recent = entries.slice(-8).reverse();
+  const max = Math.max(1, ...recent.map((entry) => Math.max(entry.total, entry.buys + entry.sells + entry.fails || 1)));
+  trendContainer.innerHTML = recent
+    .map((entry) => {
+      const rowTotal = entry.total || 1;
+      const buyWidth = Math.round((entry.buys / max) * 100);
+      const sellWidth = Math.round((entry.sells / max) * 100);
+      const failWidth = Math.round((entry.fails / max) * 100);
+      const dateLabel = entry.dateLabel || "n/a";
+      return `<article class='trend-row'>
+        <span class='trend-head'>${entry.runId || "Run"} · ${rowTotal} entries · ${dateLabel}</span>
+        <span class='trend-meta'>Buy ${entry.buys}, Sell ${entry.sells}, Fail ${entry.fails}</span>
+        <div class='trend-shell' aria-hidden='true'>
+          <span class='trend-fill buy' style='width:${buyWidth}%;'></span>
+          <span class='trend-fill sell' style='width:${sellWidth}%;'></span>
+          <span class='trend-fill fail' style='width:${failWidth}%;'></span>
+        </div>
+      </article>`;
+    })
+    .join("");
+}
+
 function getHistoryState() {
   const raw = localStorage.getItem(storageKey);
-  if (!raw) return [];
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) return parsed;
+    } catch {}
+  }
+  const legacyRaw = localStorage.getItem(legacyStorageKey);
+  if (!legacyRaw) return [];
   try {
-    return JSON.parse(raw);
+    const parsed = JSON.parse(legacyRaw);
+    return Array.isArray(parsed)
+      ? parsed.map((entry) => ({
+          runId: `legacy-${Date.parse(entry.at || new Date().toISOString())}`,
+          at: entry.at || new Date().toLocaleString(),
+          total: Number(entry.total || 0),
+          buys: Number(entry.buys || 0),
+          sells: Number(entry.sells || 0),
+          fails: Number(entry.fails || 0),
+          dateLabel: entry.date || "",
+          seed: "",
+          entries: [],
+        }))
+      : [];
   } catch {
     return [];
   }
@@ -259,6 +314,7 @@ async function runSimulation() {
   const seed = Number(marketSeedInput.value || "2026");
   const dateLabel = getDateLabel();
   const runAt = new Date().toLocaleString();
+  const runId = `run-${Date.now()}`;
   const results = [];
   statusPill.textContent = "Running simulation...";
   statusPill.className = "";
@@ -319,9 +375,106 @@ async function runSimulation() {
   statusPill.textContent = `Run complete. ${results.length} rows processed.`;
   statusPill.className = "status-ok";
   const hist = getHistoryState();
-  const next = [...hist, { at: runAt, total: results.length, buys, sells, fails }];
+  const next = [...hist, {
+    runId,
+    at: runAt,
+    total: results.length,
+    buys,
+    sells,
+    fails,
+    dateLabel,
+    seed,
+    entries: results,
+  }];
   setHistoryState(next);
   renderHistory(next);
+  renderTrend(next);
+}
+
+function buildRunPack() {
+  return {
+    schemaVersion: 2,
+    exportedAt: new Date().toISOString(),
+    repository: "Hardik-S/CryptoTradingPlatform",
+    sourceRows: getRowsState(),
+    runs: getHistoryState(),
+  };
+}
+
+function downloadJson(filename, payload) {
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(link.href);
+}
+
+function exportRunPack() {
+  const payload = buildRunPack();
+  downloadJson(`legacy-crypto-run-pack-${Date.now()}.json`, payload);
+  localStorage.setItem(runPackManifestKey, JSON.stringify({
+    exportedAt: payload.exportedAt,
+    runCount: payload.runs.length,
+  }));
+}
+
+function readRunPack(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const payload = JSON.parse(String(reader.result || "{}"));
+        if (!payload || !Array.isArray(payload.runs)) {
+          reject(new Error("Invalid run pack payload: missing runs array."));
+          return;
+        }
+        resolve(payload);
+      } catch (error) {
+        reject(error);
+      }
+    };
+    reader.onerror = () => reject(new Error("Unable to read selected file."));
+    reader.readAsText(file);
+  });
+}
+
+async function importRunPack() {
+  const file = runPackFile.files?.[0];
+  if (!file) {
+    statusPill.textContent = "Select a run pack JSON file first.";
+    statusPill.className = "status-warn";
+    return;
+  }
+  try {
+    const payload = await readRunPack(file);
+    const next = (payload.runs || []).map((entry) => ({
+      runId: entry.runId || `imported-${Date.now()}`,
+      at: entry.at || new Date().toLocaleString(),
+      total: Number(entry.total || 0),
+      buys: Number(entry.buys || 0),
+      sells: Number(entry.sells || 0),
+      fails: Number(entry.fails || 0),
+      dateLabel: entry.dateLabel || "",
+      seed: entry.seed || "",
+      entries: Array.isArray(entry.entries) ? entry.entries : [],
+    }));
+    setHistoryState(next);
+    renderHistory(next);
+    renderTrend(next);
+    statusPill.textContent = `Run pack imported with ${next.length} runs.`;
+    statusPill.className = "status-ok";
+    localStorage.setItem(runPackManifestKey, JSON.stringify({
+      importedAt: new Date().toISOString(),
+      runCount: next.length,
+      source: payload.repository || "unknown",
+    }));
+  } catch (error) {
+    statusPill.textContent = `Import failed: ${error.message}`;
+    statusPill.className = "status-bad";
+  } finally {
+    runPackFile.value = "";
+  }
 }
 
 function exportCSV() {
@@ -367,7 +520,9 @@ runTradeBtn.addEventListener("click", runSimulation);
 runExportBtn.addEventListener("click", exportCSV);
 historyClear.addEventListener("click", () => {
   localStorage.removeItem(storageKey);
+  localStorage.removeItem(runPackManifestKey);
   renderHistory([]);
+  renderTrend([]);
   statusPill.textContent = "History cleared.";
 });
 
@@ -396,8 +551,15 @@ loginForm.addEventListener("submit", (event) => {
   }
 });
 
+runExportPackBtn.addEventListener("click", exportRunPack);
+runImportPackBtn.addEventListener("click", () => runPackFile.click());
+runPackFile.addEventListener("change", importRunPack);
+
 hydrateFromStorage();
-renderHistory(getHistoryState());
+const existingHistory = getHistoryState();
+setHistoryState(existingHistory);
+renderHistory(existingHistory);
+renderTrend(existingHistory);
 
 if (!marketSeedInput.value) {
   marketSeedInput.value = "2026";

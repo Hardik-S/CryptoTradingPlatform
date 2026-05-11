@@ -2,9 +2,11 @@
 
 ## Selection and continuity context
 - Repository selected live: `Hardik-S/CryptoTradingPlatform` (older than six months, non-archived, non-fork).
-- No prior automation modernization path was found for this repository in `state/legacy-rebuild-log.md`.
-- A fresh branch was created: `legacy-rebuild/CryptoTradingPlatform-20260511-0040`.
-- Worktree path: `automation-runs/legacy-rebuild/worktrees/CryptoTradingPlatform-20260511-0040`.
+- Prior modernization path existed and was reused from:
+  - Branch: `legacy-rebuild/CryptoTradingPlatform-20260511-0040`.
+  - Worktree: `automation-runs/legacy-rebuild/worktrees/CryptoTradingPlatform-20260511-0040`.
+- New continuation branch: `legacy-rebuild/CryptoTradingPlatform-20260511-0230`.
+- Continuation worktree path: `automation-runs/legacy-rebuild/worktrees/CryptoTradingPlatform-20260511-0230`.
 
 ## Old-to-new functionality map
 - Old Java Swing app preserved behavior:
@@ -33,10 +35,14 @@
   - Use demo pair `1` / `2` (from repo credentials).
 - Simulation:
   - Add rows, choose strategy, and press `Run legacy trade simulation`.
+- Audit/export:
+  - `Export results CSV` preserves legacy-style tabular output.
+  - `Export run pack (JSON)` saves deterministic reusable run snapshots and entries.
+  - `Import run pack (JSON)` restores run snapshots into local history.
 - Verification:
   - Syntax check via `node --check modern/app.js` and `git diff --check`.
   - Local smoke by serving this folder and opening `modern/index.html`.
 
 ## Next logical upgrade
-- Add a persistent `runId` and downloadable JSON bundle for each saved run.
-- Add light chart (Canvas/WebGL-free) for cumulative action trends across runs.
+- Add a copy-to-clipboard action for the latest run pack.
+- Add a Vercel static preview and mobile trend rendering check.

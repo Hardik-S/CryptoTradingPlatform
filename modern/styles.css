@@ -200,6 +200,12 @@ td select {
   gap: 0.8rem;
 }
 
+.trend {
+  margin-top: 0.65rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
 .bar-row {
   display: grid;
   gap: 0.35rem;
@@ -217,6 +223,51 @@ td select {
   border-radius: 999px;
   height: 12px;
   overflow: hidden;
+}
+
+.trend-row {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px solid #233753;
+  background: #0b1523;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+}
+
+.trend-head {
+  color: #9fb0c4;
+  font-size: 0.8rem;
+}
+
+.trend-meta {
+  color: #7e94af;
+  font-size: 0.78rem;
+}
+
+.trend-shell {
+  width: 100%;
+  background: #081526;
+  border: 1px solid #23354a;
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.trend-fill {
+  height: 100%;
+  float: left;
+}
+
+.trend-fill.buy {
+  background: linear-gradient(90deg, #33d98b, #8cffe5);
+}
+
+.trend-fill.sell {
+  background: linear-gradient(90deg, #ff9f5a, #ffd46a);
+}
+
+.trend-fill.fail {
+  background: linear-gradient(90deg, #ff8780, #ff4b4b);
 }
 
 .bar-fill {

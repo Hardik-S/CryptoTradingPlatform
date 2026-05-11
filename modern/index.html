@@ -45,6 +45,9 @@
             <button type="button" id="addRow">Add trader row</button>
             <button type="button" id="runTrade">Run legacy trade simulation</button>
             <button type="button" id="runExport" class="ghost">Export results CSV</button>
+            <button type="button" id="runExportPack" class="ghost">Export run pack (JSON)</button>
+            <button type="button" id="runImportPack" class="ghost">Import run pack (JSON)</button>
+            <input id="runPackFile" type="file" accept="application/json" hidden />
           </div>
           <p class="subtitle">
             Trader rows, coin lists, and strategy choice mirror the legacy behavior.
@@ -121,11 +124,15 @@
               <div id="actionBars" class="bars" role="list"></div>
             </div>
             <div>
-              <h2>Run history</h2>
+              <h2>Run history (latest 8)</h2>
               <ul id="runHistory"></ul>
               <div class="toolbar">
                 <button type="button" id="historyClear" class="ghost">Clear history</button>
               </div>
+            </div>
+            <div>
+              <h2>Run trend</h2>
+              <div id="runTrend" class="trend" role="list"></div>
             </div>
           </div>
         </section>
