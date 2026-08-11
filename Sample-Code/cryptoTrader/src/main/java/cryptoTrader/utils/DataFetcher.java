@@ -12,31 +12,38 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class DataFetcher {
+	private static final int REQUEST_TIMEOUT_MILLIS = 10_000;
 
 	private JsonObject getDataForCrypto(String id, String date) {
 
 		String urlString = String.format(
 				"https://api.coingecko.com/api/v3/coins/%s/history?date=%s", id, date);
-		
+		HttpURLConnection conn = null;
 		try {
 			URL url = new URL(urlString);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
+			conn.setConnectTimeout(REQUEST_TIMEOUT_MILLIS);
+			conn.setReadTimeout(REQUEST_TIMEOUT_MILLIS);
 			conn.connect();
 			int responsecode = conn.getResponseCode();
-			if (responsecode == 200) {
-				String inline = "";
-				Scanner sc = new Scanner(url.openStream());
-				while (sc.hasNext()) {
-					inline += sc.nextLine();
+			if (responsecode == HttpURLConnection.HTTP_OK) {
+				StringBuilder inline = new StringBuilder();
+				try (Scanner sc = new Scanner(conn.getInputStream(), "UTF-8")) {
+					while (sc.hasNext()) {
+						inline.append(sc.nextLine());
+					}
 				}
-				sc.close();
-				JsonObject jsonObject = new JsonParser().parse(inline).getAsJsonObject();
+				JsonObject jsonObject = new JsonParser().parse(inline.toString()).getAsJsonObject();
 				return jsonObject;
 			}
 
 		} catch (IOException e) {
 			System.out.println("Something went wrong with the API call.");
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
 		}
 		return null;
 	}
