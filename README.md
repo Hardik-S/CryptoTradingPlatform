@@ -19,4 +19,10 @@ Main UI information
 	
 	Strategy Name column
 		Drop down menu consisting of 4 strategies, must pick one. If one is not picked, an error will appear 
+
+Alpha Vantage integration
+
+	The optional `AvailableCryptoList.call()` helper reads its credential from the
+	`ALPHAVANTAGE_API_KEY` environment variable. Do not place API keys in source
+	files or commit them to this repository.
 		

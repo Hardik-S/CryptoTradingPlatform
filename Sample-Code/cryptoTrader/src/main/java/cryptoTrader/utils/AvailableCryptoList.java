@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class AvailableCryptoList {
+	private static final String ALPHAVANTAGE_API_KEY_ENV = "ALPHAVANTAGE_API_KEY";
 	private static AvailableCryptoList instance = null;
 	
 	private Map<String, String> availableCryptosMap = new HashMap<>();
@@ -31,7 +32,14 @@ public class AvailableCryptoList {
 	}
 	
 	public void call() {
-		String urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=IBM&apikey=VNEY4VV2AWF1EB51";
+		String apiKey = System.getenv(ALPHAVANTAGE_API_KEY_ENV);
+		if (apiKey == null || apiKey.trim().isEmpty()) {
+			throw new IllegalStateException("Set " + ALPHAVANTAGE_API_KEY_ENV
+					+ " before calling the Alpha Vantage integration.");
+		}
+
+		String urlString = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY"
+				+ "&symbol=IBM&apikey=" + apiKey;
 		try {
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -61,7 +69,7 @@ public class AvailableCryptoList {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block e.printStackTrace();
+			// The optional integration should not terminate the desktop client.
 		}
 	}
 	
@@ -70,7 +78,6 @@ public class AvailableCryptoList {
 		String urlString = 
 				"https://api.coingecko.com/api/v3/coins/markets" + 
 						"?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false";
-//		ALPHAVANTAGE API KEY = VNEY4VV2AWF1EB51
 		try {
 			URL url = new URL(urlString);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
